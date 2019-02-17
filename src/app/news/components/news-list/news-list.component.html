@@ -1,0 +1,3 @@
+<div class="news-list" *ngFor="let news of newsList;  index as id">
+    <news-item [newsItem]="news" [id]="id" (onDeleteNews)="deleteNews($event)"></news-item>
+</div>

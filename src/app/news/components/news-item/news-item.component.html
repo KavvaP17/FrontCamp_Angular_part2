@@ -1,0 +1,41 @@
+<div class="news-wr">
+    <div class="news-img">
+      <img src={{newsItem.urlToImage}} alt={{newsItem.title}} width="300px" height="200px">
+    </div>
+    <div class="news-data">
+      <div>
+          <div class="news-data-header">
+              <div class="news-title">
+                  <mat-icon svgIcon="title" class="news-panel-icons"></mat-icon>
+                  <span class="news-panel-text news-panel-title">{{newsItem.title | uppercase}}</span>
+                </div>
+                <div class="news-btns">
+                  <div class="news-edit-btn" [ngClass]="{'disabled-btn': isDisabled()}">
+                    <a mat-icon-button color="primary" class="news-panel-btn" [ngClass]="{'disabled': isDisabled()}" [routerLink]="['/news/edit', id]">
+                      <mat-icon svgIcon="edit" class="news-panel-icon-edit"></mat-icon>
+                    </a>
+                  </div>
+                  <div class="news-delete-btn" [ngClass]="{'disabled-btn': isDisabled()}">
+                    <a mat-icon-button color="warn" class="news-panel-btn news-panel-btn-delete" [ngClass]="{'disabled': isDisabled()}" (click)="delete($event)">
+                      <mat-icon svgIcon="delete" class="news-panel-icon-delete"></mat-icon>
+                    </a>
+                  </div>
+                </div>
+          </div>
+          <div class="news-description">
+            <p>{{newsItem.description}}</p>
+          </div>
+          <div class="news-read-more">
+            <a [routerLink]="['/news/read', id]" [queryParams]="{ source: newsItem.source.id}">Read more...</a>
+          </div>
+      </div>
+  
+      <div class="news-data-footer">
+        <div class="news-date">
+          <mat-icon svgIcon="calendar" class="news-panel-icons"></mat-icon>
+          <span class="news-panel-text news-panel-creation">{{newsItem.publishedAt}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,14 @@
+@media (max-width: 1100px) {
+    .news-list {
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .news-list {
+        width: 1100px;
+        padding: 20px;
+        margin: 0 auto;
+    }
+}

@@ -1,0 +1,40 @@
+.add-news-form{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    max-width: 900px;
+}
+
+.duration-filtred{
+    padding-left: 20px;
+}
+.add-news-btns{
+    display: flex;
+    justify-content: space-between;
+}
+.add-news-btn, .close-add-page {
+    margin: 10px;
+    width: 100%;
+}
+
+.error-wr{
+  position: relative;
+  height: 15px;
+}
+
+.error-msg{
+  position: absolute;
+  top: -15px;
+  color: red;
+}
+.col1, .col2 {
+    min-width: 450px;
+    margin: 20px;
+}
+.example-full-width{
+    width: 100%;
+}
+.content-textarea{
+    height: 150px;
+}

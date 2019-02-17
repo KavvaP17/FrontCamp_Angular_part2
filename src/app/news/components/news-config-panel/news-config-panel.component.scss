@@ -1,0 +1,29 @@
+.news-config-panel {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    border-bottom: 1px solid #EEE;
+
+    .filter {
+        .filter-input {
+            padding: 0 5px; 
+        }
+    }
+    
+    .created-by-me {
+        .created-by-me-section {
+            display: flex;
+            align-content: center;
+            align-items: center;
+            height: 60px;
+          }
+        
+        .created-by-me-checkbox {
+            margin: 0 10px;
+          }
+    }
+
+    .add-news {
+        line-height: 60px;
+    }
+}
