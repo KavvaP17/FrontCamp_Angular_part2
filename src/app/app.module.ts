@@ -7,6 +7,7 @@ import { NewsModule } from './news/news.module';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
     CoreModule,
     NewsModule,
     FormsModule,
+    AuthModule,
     AppRoutingModule
   ],
   providers: [],

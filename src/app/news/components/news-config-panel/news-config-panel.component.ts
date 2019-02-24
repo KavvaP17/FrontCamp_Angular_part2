@@ -1,19 +1,21 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { ConfigService } from 'src/app/core/services/config/config.service';
 import { Router } from '@angular/router';
 import { FilterService } from '../../services/filter/filter.service';
+import { useAnimation } from '@angular/animations';
 
 @Component({
   selector: 'news-config-panel',
   templateUrl: './news-config-panel.component.html',
   styleUrls: ['./news-config-panel.component.scss']
 })
-export class NewsConfigPanelComponent implements OnInit {
+export class NewsConfigPanelComponent implements OnInit, OnChanges {
   onlyCreatedByMe: boolean = false;
   filterValue: string;
   channels : Channel[];
   selectedChannel: string;
   @Input() source: string;
+  @Input() user;
   @Output() onChangedChannel = new EventEmitter<Channel>();
   @Output() onFilter = new EventEmitter<void>();
 
@@ -32,6 +34,12 @@ export class NewsConfigPanelComponent implements OnInit {
     this.router.navigate(['/news'], { queryParams: { source: this.selectedChannel}});
   }
 
+  ngOnChanges() {
+    if(!this.user) {
+      this.onlyCreatedByMe = false;
+    }
+  }
+
   changeChannel(channelValue) {
     this.router.navigate(['/news'], { queryParams: { source: channelValue.value}});
   }
@@ -44,8 +52,8 @@ export class NewsConfigPanelComponent implements OnInit {
     this.onlyCreatedByMe = value;
     if (value) {
       this.selectedChannel = this.channels[0].value;
-      this.router.navigate(['/news'], { queryParams: { source: this.selectedChannel}});
     }
+    this.router.navigate(['/news'], { queryParams: { source: this.selectedChannel, createdByMe: this.onlyCreatedByMe}});
   }
 }
 

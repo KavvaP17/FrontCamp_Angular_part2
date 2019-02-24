@@ -12,4 +12,10 @@ describe('InitIconsService', () => {
   it('should be created', inject([InitIconsService], (service: InitIconsService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('should registry icons', inject([InitIconsService], (service: InitIconsService) => {
+    const iconRegistryspy = spyOn<any>(service['iconRegistry'],'addSvgIcon');
+    service.init();
+    expect(iconRegistryspy).toHaveBeenCalled();
+  }));
 });

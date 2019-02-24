@@ -19,12 +19,12 @@
   </div>
   <div class="created-by-me">
     <section class="created-by-me-section">
-      <mat-checkbox class="created-by-me-checkbox" [(ngModel)]="onlyCreatedByMe" 
+      <mat-checkbox class="created-by-me-checkbox" [disabled]="!user" [(ngModel)]="onlyCreatedByMe" 
         (ngModelChange)="onlyCreatedByMeChanged($event)">Only created by me</mat-checkbox>
     </section>
   </div>
   <div class="add-news">
-      <a mat-raised-button color="primary" [routerLink]="['/news/add']">Add news</a>
+      <a mat-raised-button color="primary" [disabled]="!user" [routerLink]="['/news/add']">Add news</a>
   </div>
 </div>
   

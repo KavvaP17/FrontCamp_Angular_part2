@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 @Component({
   selector: 'news-item',
@@ -12,6 +11,7 @@ export class NewsItemComponent implements OnInit {
 
   @Input() newsItem: NewsItem;
   @Input() id: number;
+  @Input() user;
   @Output() onDeleteNews = new EventEmitter<number>();
 
   constructor(public dialog: MatDialog) { }
@@ -33,13 +33,15 @@ export class NewsItemComponent implements OnInit {
   }
 
   isDisabled() {
-    return !this.newsItem.source || this.newsItem.source.id !== 'local-news' 
+    return !this.user || !this.newsItem.source || this.newsItem.source.id !== 'local-news' 
+      || this.newsItem.author_id !== this.user._id;
   }
 
 }
 
 export interface NewsItem {
   author: string;
+  author_id: string;
   content: string;
   description: string;
   publishedAt: string;

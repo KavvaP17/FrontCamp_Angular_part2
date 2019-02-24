@@ -1,6 +1,6 @@
 <div>
   <news-source [source]="source"></news-source>
-  <news-config-panel (onChangedChannel)="changedChannel($event)" [source]="source" (onFilter)="filter($event)"></news-config-panel>
-  <news-list [newsList]="newsList" (onDeleteNews)="deleteNews($event)"></news-list>
+  <news-config-panel (onChangedChannel)="changedChannel($event)" [source]="source" [user]="user" (onFilter)="filter($event)"></news-config-panel>
+  <news-list [newsList]="newsList" [user]="user" (onDeleteNews)="deleteNews($event)"></news-list>
   <load-more (click)="loadMore()"></load-more>
 </div>

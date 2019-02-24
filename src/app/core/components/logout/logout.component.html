@@ -1,7 +1,7 @@
-<div class="user-logout-wr">
+<div class="user-logout-wr" *ngIf="!isAuthFormActivated">
   <div class="user-login-wr">
     <mat-icon svgIcon="user" class="user-icon"></mat-icon>
-    <span class="user-login">Guest</span>
+    <span class="user-login">{{currentUser}}</span>
   </div>
   <div class="user-menu-wr">
     <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -12,9 +12,13 @@
         <mat-icon svgIcon="edit"></mat-icon>
         <span>Edit profile</span>
       </button>
-      <button mat-menu-item (click)="logout()">
+      <button mat-menu-item (click)="logout()" *ngIf="isAuthenticated">
         <mat-icon svgIcon="logout"></mat-icon>
         <span>Logout</span>
+      </button>
+      <button mat-menu-item (click)="login()" *ngIf="!isAuthenticated">
+        <mat-icon svgIcon="logout"></mat-icon>
+        <span>LogIn</span>
       </button>
     </mat-menu>
   </div>

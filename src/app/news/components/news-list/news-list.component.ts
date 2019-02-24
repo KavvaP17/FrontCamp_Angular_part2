@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class NewsListComponent implements OnInit {
 
   @Input() newsList;
+  @Input() user;
   @Output() onDeleteNews = new EventEmitter<void>();
 
   constructor(

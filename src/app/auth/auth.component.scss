@@ -1,0 +1,44 @@
+.auth-container {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-container > * {
+  width: 30%;
+}
+.btn-login{
+  margin-top: 30px;
+}
+
+.btn-panel {
+  display: flex;
+  justify-content: space-between;  
+}
+.btn-register, .btn-back {
+  width: 45%;
+}
+
+.error-msg-wr{
+  background-color:#f2dee0;
+  border: 1px solid #dca5a3;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.error-msg{
+  color: #ac8180;
+  line-height: 40px;
+  padding: 20px;
+}
+
+.input-error-wr {
+  position: relative;
+  height: 20px;
+}
+
+.input-error-msg {
+  position: absolute;
+  top: -15px;
+  color: red;
+}

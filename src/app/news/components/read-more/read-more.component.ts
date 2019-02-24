@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Router, Params, ActivatedRoute} from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { Router, ActivatedRoute} from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConfigService } from 'src/app/core/services/config/config.service';
 import { NewsApiService } from '../../services/news-api/news-api.service';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'read-more',
@@ -18,17 +19,25 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   public source: string;
   public id: number;
   public newsItem;
+  public user;
 
   @Output() onDeleteNews = new EventEmitter<string>();
+
+  private subscriptions: Subscription[] = [];
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private configService: ConfigService,
               private fb: FormBuilder,
               private newsService: NewsApiService,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              private authService: AuthService) { }
 
   ngOnInit() {
+    const userSub = this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     this.readMoreForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', Validators.maxLength(500)],
@@ -37,14 +46,16 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
       authors: [[]]
     });
 
-    this.activatedRoute.queryParams.subscribe(params => {
+    const queryParamsSub = this.activatedRoute.queryParams.subscribe(params => {
       this.source = this.configService.getSourceLabelByValue(params.source);
     });
 
-    this.activatedRoute.params.subscribe(params => {
+    const paramsSub = this.activatedRoute.params.subscribe(params => {
       this.id = +params.id;
       this.newsItem = this.newsService.getNewsById(this.id);
-    })
+    });
+
+    this.subscriptions.push(userSub, queryParamsSub, paramsSub);
 
   }
 
@@ -69,10 +80,13 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {sub.unsubscribe()});
+  }
 
   isDisabled() {
     return !this.newsItem.source || this.newsItem.source.id !== 'local-news' 
+      || !this.user || this.newsItem.author_id !== this.user._id;
   }
 
 }

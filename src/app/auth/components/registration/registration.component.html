@@ -1,0 +1,47 @@
+<form class="auth-container"
+    [formGroup]="authForm"
+    (ngSubmit)="register(authForm.controls.login.value, authForm.controls.password.value)"
+    novalidate>
+  <div *ngIf="showErrorMessage" class="error-msg-wr">
+    <span class="error-msg">Failed to register</span>
+  </div>
+  <mat-form-field>
+    <input matInput placeholder="Login"
+      formControlName="login">
+  </mat-form-field>
+  <div class="input-error-wr">
+    <p class="input-error-msg" *ngIf="!authForm.controls.login.valid && authForm.controls.login.touched">Please enter login</p>
+  </div>
+  <mat-form-field>
+    <input matInput placeholder="Password"
+      [type]="hide ? 'password' : 'text'"
+      formControlName="password">
+    <mat-icon matSuffix (click)="hide = !hide" class="password-icon">
+      <mat-icon svgIcon="visibility" *ngIf="hide"></mat-icon>
+      <mat-icon svgIcon="visibility-off" *ngIf="!hide"></mat-icon>
+    </mat-icon>
+  </mat-form-field>
+  <div class="input-error-wr">
+    <p class="input-error-msg" *ngIf="!authForm.controls.password.valid && authForm.controls.password.touched">Please enter password</p>
+  </div>
+  <mat-form-field>
+    <input matInput placeholder="Confirm password"
+      [type]="confirmHide ? 'password' : 'text'"
+      formControlName="confirmPassword">
+    <mat-icon matSuffix (click)="confirmHide = !confirmHide" class="password-icon">
+      <mat-icon svgIcon="visibility" *ngIf="confirmHide"></mat-icon>
+      <mat-icon svgIcon="visibility-off" *ngIf="!confirmHide"></mat-icon>
+    </mat-icon>
+  </mat-form-field>
+  <div class="input-error-wr">
+    <p class="input-error-msg" *ngIf="!authForm.controls.confirmPassword.valid && authForm.controls.confirmPassword.touched">Please confirm password</p>
+  </div>
+  <button mat-raised-button color="primary"
+    class="btn-login"
+    type="submit"
+    [disabled]="!authForm.valid || authForm.controls.confirmPassword.value !== authForm.controls.password.value">Register</button>
+  <button mat-raised-button color="warn"
+    class="btn-login"
+    (click)="cancel()">Back to Auth</button>
+</form>
+

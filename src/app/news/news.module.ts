@@ -16,7 +16,6 @@ import { NewsComponent } from './news.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewsApiService } from './services/news-api/news-api.service';
 import { NewsRoutingModule } from './news-routing.module';
-import { NewsReadMoreComponent } from './components/news-read-more/news-read-more.component';
 import { AddNewsComponent } from './components/add-news/add-news.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatDialogModule } from '@angular/material';
@@ -33,7 +32,6 @@ import { FilterService } from './services/filter/filter.service';
     NewsListComponent, 
     NewsItemComponent, 
     NewsComponent, 
-    NewsReadMoreComponent,
     AddNewsComponent,
     DialogComponent,
     EditNewsComponent,

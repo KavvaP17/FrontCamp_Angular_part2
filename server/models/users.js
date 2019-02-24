@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
+
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    email: String,
-    username: String,
-    password: String,
+    local: {
+        login: String,
+        password: String,
+    },
+    facebook: {
+        id: String,
+        token: String,
+        email: String,
+        name: String
+    } 
 });
 
-UserSchema.methods.validatePassword = function(password) {
-    return password === this.password;
-}
+UserSchema.methods.validPassword = function(password) {
+    return this.local.password === password;
+};
 
-const Users = mongoose.model('Users', UserSchema);
-
-module.exports = Users;
+module.exports = mongoose.model('User', UserSchema);

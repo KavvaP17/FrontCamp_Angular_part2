@@ -3,6 +3,7 @@ import { ConfigService } from 'src/app/core/services/config/config.service';
 import { LoadingService } from 'src/app/core/services/loading/loading.service';
 import News from '../../classes/News';
 import { FilterService } from '../filter/filter.service';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,25 +14,33 @@ export class NewsApiService {
 
   constructor(private configService: ConfigService,
               private loadingService: LoadingService,
-              private filterService: FilterService) { }
+              private filterService: FilterService,
+              private authService: AuthService) { }
 
-  getData(channel, recordCount) {
+  getData(channel, recordCount, createdByMe) {
     this.loadingService.setIsLoadingValue(false);
     switch(channel) {
       case 'local-news':
         return fetch(this.getLocalUrl())
-        .then(response => response.json())
-        .then(result => {
-          result.forEach(res => {
-            res.source = {
-              id: 'local-news',
-              label: 'Local News'
+          .then(response => response.json())
+          .then(result => {
+            result.forEach(res => {
+              res.source = {
+                id: 'local-news',
+                label: 'Local News'
+              }
+            });
+            if (createdByMe === 'true') {
+              const userId = this.authService.user.getValue()._id;
+              result = result.filter(res => res.author_id === userId);
             }
+            this.currentNews = result.slice(0, recordCount);;
+            this.loadingService.setIsLoadingValue(true);
+            return this.filterService.filter(this.currentNews);
+          })
+          .catch((err) => {
+            this.loadingService.setIsLoadingValue(true);
           });
-          this.currentNews = result.slice(0, recordCount);;
-          this.loadingService.setIsLoadingValue(true);
-          return this.filterService.filter(this.currentNews);
-        });
       default: 
         const url = this.getUrl(channel, recordCount);
         return fetch(url)
@@ -40,11 +49,14 @@ export class NewsApiService {
             this.currentNews = result.articles;
             this.loadingService.setIsLoadingValue(true);
             return this.filterService.filter(this.currentNews);
+          })
+          .catch((err) => {
+            this.loadingService.setIsLoadingValue(true);
           });
     }
   }
 
-  loadMore(channel) {
+  loadMore(channel, createdByMe) {
     this.loadingService.setIsLoadingValue(false);
     switch(channel) {
       case 'local-news':
@@ -57,9 +69,16 @@ export class NewsApiService {
               label: 'Local News'
             }
           });
+          if (createdByMe === 'true') {
+            const userId = this.authService.user.getValue()._id;
+            result = result.filter(res => res.author_id === userId);
+          }
           this.currentNews = result.slice(0, this.currentNews.length + 5);
           this.loadingService.setIsLoadingValue(true);
           return this.filterService.filter(this.currentNews);
+        })
+        .catch((err) => {
+          this.loadingService.setIsLoadingValue(true);
         });
       default: 
         const url = this.getUrl(channel, this.currentNews.length + 5);
@@ -69,6 +88,9 @@ export class NewsApiService {
             this.currentNews = result.articles;
             this.loadingService.setIsLoadingValue(true);
             return this.filterService.filter(this.currentNews);
+          })
+          .catch((err) => {
+            this.loadingService.setIsLoadingValue(true);
           });
     }
   }
@@ -95,6 +117,9 @@ export class NewsApiService {
       }).then(() => {
         this.loadingService.setIsLoadingValue(true);
       })
+      .catch((err) => {
+        this.loadingService.setIsLoadingValue(true);
+      });
   }
 
   deleteNews(id: string): Promise<void> {
@@ -118,6 +143,7 @@ export class NewsApiService {
             {
               title: news.title,
               author: news.author,
+              author_id: news.author_id,
               description: news.description,
               url: news.url,
               urlToImage: news.urlToImage,

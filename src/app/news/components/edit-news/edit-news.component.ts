@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NewsApiService } from '../../services/news-api/news-api.service';
 import { Location } from '@angular/common';
 import News from '../../classes/News';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-news',
@@ -15,12 +17,16 @@ export class EditNewsComponent implements OnInit, OnDestroy {
   public editNewsForm: FormGroup;
   public newsItem;
   public source;
+  public user;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private newsService: NewsApiService,
-    private location: Location) { }
+    private location: Location,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
@@ -32,10 +38,15 @@ export class EditNewsComponent implements OnInit, OnDestroy {
         content: [this.newsItem.content, Validators.maxLength(500)],
         image: [this.newsItem.urlToImage],
         date: [this.newsItem.publishedAt],
-        author: [this.newsItem.author],
         url: [this.newsItem.url]
       });
     });
+
+    const userSub = this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
+    this.subscriptions.push(userSub);
   }
 
   public close() {
@@ -43,7 +54,7 @@ export class EditNewsComponent implements OnInit, OnDestroy {
   }
 
   public save() {
-    const editedNews = new News(this.editNewsForm.controls.title.value, this.editNewsForm.controls.author.value, this.editNewsForm.controls.description.value,
+    const editedNews = new News(this.editNewsForm.controls.title.value, this.user.local.login, this.user._id, this.editNewsForm.controls.description.value,
       this.editNewsForm.controls.url.value, this.editNewsForm.controls.image.value, this.editNewsForm.controls.date.value, this.editNewsForm.controls.content.value); 
     this.newsService.updateNews(editedNews, this.newsItem._id)
       .then(() => {
@@ -51,6 +62,8 @@ export class EditNewsComponent implements OnInit, OnDestroy {
       })
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {sub.unsubscribe()});
+  }
 
 }
