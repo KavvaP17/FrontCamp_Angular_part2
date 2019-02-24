@@ -10,4 +10,5 @@ describe('AuthModule', () => {
   it('should create an instance', () => {
     expect(authModule).toBeTruthy();
   });
+  
 });

@@ -31,6 +31,9 @@ export class EditNewsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.newsItem = this.newsService.getNewsById(+params.id);
+      if(!this.newsItem) {
+        this.router.navigate(['news']);
+      }
       this.source =  this.newsItem.source.id;
       this.editNewsForm = this.fb.group({
         title: [this.newsItem.title, [Validators.required, Validators.maxLength(50)]],

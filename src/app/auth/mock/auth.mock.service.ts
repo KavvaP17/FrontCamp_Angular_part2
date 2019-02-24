@@ -1,9 +1,17 @@
 import { BehaviorSubject } from 'rxjs';
 
+const mockUser = {
+  _id: '1',
+  local: {
+    login: 'login',
+    password: 'password'
+  }
+}
+
 export class AuthMockService {
 
   public isAuthenticated = new BehaviorSubject<boolean>(false);
-  public user = new BehaviorSubject<any>(null);
+  public user = new BehaviorSubject<any>(mockUser);
   
   constructor() {
   }

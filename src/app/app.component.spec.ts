@@ -8,6 +8,8 @@ import { LoadingService } from './core/services/loading/loading.service';
 import { LoadingMockService } from './core/mock/loading.mock.service';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -27,7 +29,14 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
+
+  it('ngOnInit method should init icons', () => {
+    const spyIconInit = spyOn<any>(component['initIconsService'], 'init');
+    component.ngOnInit();
+    expect(spyIconInit).toHaveBeenCalled();
+  })
 });

@@ -32,7 +32,7 @@ export class RegistrationComponent implements OnInit {
       .then(() => {
         this.router.navigate(['/auth']);
       })
-      .catch((e) => {
+      .catch(() => {
         this.showErrorMessage = true;
       })
   }

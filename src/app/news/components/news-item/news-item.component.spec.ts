@@ -50,4 +50,28 @@ describe('NewsItemComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('isDisabled method should return disabled status', () => {
+    expect(component.isDisabled()).toBeTruthy();
+
+    component.user = {
+      _id: '1'
+    }
+    expect(component.isDisabled()).toBeTruthy();
+
+    component.newsItem = <any>{
+      author_id: '2',
+      source: {
+        id: 'local-news',
+        label: 'local-news'
+      }
+    }
+    expect(component.isDisabled()).toBeTruthy();
+
+    component.newsItem.author_id = '1';
+    expect(component.isDisabled()).toBeFalsy();
+
+  })
+
+
 });

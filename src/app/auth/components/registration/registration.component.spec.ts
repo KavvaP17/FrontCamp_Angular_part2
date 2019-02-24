@@ -45,4 +45,25 @@ describe('RegistrationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('register method should navigate to auth page if data is correct', async () => {
+    const authSpy = spyOn(component['authService'], 'registration').and.returnValue(Promise.resolve());
+    const routerSpy = spyOn(component['router'], 'navigate');
+    await component.register('test', 'test');
+    expect(authSpy).toHaveBeenCalled();
+    expect(routerSpy).toHaveBeenCalled();
+  });
+
+  it('register method should show error message if data is not correct', async () => {
+    const authSpy = spyOn(component['authService'], 'registration').and.returnValue(Promise.reject());    
+    await component.register('test', 'test');
+    expect(authSpy).toHaveBeenCalled();
+  });
+
+  it('cancel method should navigate to auth page', () => {
+    const routerSpy = spyOn(component['router'], 'navigate');
+    component.cancel();
+    expect(routerSpy).toHaveBeenCalled();
+  })
+
 });

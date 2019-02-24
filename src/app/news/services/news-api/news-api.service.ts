@@ -10,14 +10,14 @@ import { AuthService } from 'src/app/auth/services/auth/auth.service';
 })
 export class NewsApiService {
 
-  public currentNews;
+  public currentNews = [];
 
   constructor(private configService: ConfigService,
               private loadingService: LoadingService,
               private filterService: FilterService,
               private authService: AuthService) { }
 
-  getData(channel, recordCount, createdByMe) {
+  getData(channel: string, recordCount: number, createdByMe: string) {
     this.loadingService.setIsLoadingValue(false);
     switch(channel) {
       case 'local-news':

@@ -18,8 +18,8 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   public readMoreForm: FormGroup;
   public source: string;
   public id: number;
-  public newsItem;
-  public user;
+  public newsItem = null;
+  public user = null;
 
   @Output() onDeleteNews = new EventEmitter<string>();
 
@@ -47,12 +47,19 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
     });
 
     const queryParamsSub = this.activatedRoute.queryParams.subscribe(params => {
-      this.source = this.configService.getSourceLabelByValue(params.source);
+      if (params && params.source){
+        this.source = this.configService.getSourceLabelByValue(params.source);
+      } else {
+        this.router.navigate(['news']);
+      }
     });
 
     const paramsSub = this.activatedRoute.params.subscribe(params => {
       this.id = +params.id;
       this.newsItem = this.newsService.getNewsById(this.id);
+      if(!this.newsItem) {
+        this.router.navigate(['news']);
+      }
     });
 
     this.subscriptions.push(userSub, queryParamsSub, paramsSub);
@@ -85,7 +92,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   }
 
   isDisabled() {
-    return !this.newsItem.source || this.newsItem.source.id !== 'local-news' 
+    return !this.newsItem || !this.newsItem.source || this.newsItem.source.id !== 'local-news' 
       || !this.user || this.newsItem.author_id !== this.user._id;
   }
 
